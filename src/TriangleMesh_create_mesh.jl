@@ -57,7 +57,7 @@ Creates a triangulation of a planar straight-line graph (PSLG) polygon.
 - `set_max_steiner_points :: Bool = false`: If true the user will be asked to enter the maximum number
                                              of Steiner points added. If the user inputs 0 this is
                                              equivalent to `set_max_steiner_points = true`.
-- `set_area_max :: Bool = false`: If true the user will be asked for the maximum triangle area.
+- `max_area :: Number = 0.0`: maximum triangle area.
 - `set_angle_min :: Bool = false`: If true the user will be asked for a lower bound for minimum
                                 angles in the triangulation.
 - `add_switches :: String = ""`: The user can pass additional switches as described in triangle's
@@ -77,7 +77,7 @@ function create_mesh(poly::Polygon_pslg;
                                 prevent_steiner_points_boundary::Bool=false,
                                 prevent_steiner_points::Bool=false,
                                 set_max_steiner_points::Bool=false,
-                                set_area_max::Bool=false,
+                                max_area::Number=0.0,
                                 set_angle_min::Bool=false,
                                 second_order_triangles::Bool=false,
                                 add_switches::String="")
@@ -146,18 +146,8 @@ function create_mesh(poly::Polygon_pslg;
     # -------
 
     # -------
-    if set_area_max
-        max_area_str = input("Maximum triangle area: ")
-        # Check if input makes sense
-        try
-            number = parse(Float64, max_area_str)
-            if number <= 0
-                Base.@error "Area must be positive."
-            end
-        catch
-            Base.@error "Area must be a positive real number."
-        end
-
+    if max_area>0
+        max_area_str = string(max_area)
         switches = switches * "a" * max_area_str
     end
     # -------
@@ -273,7 +263,7 @@ Creates a triangulation of the convex hull of a point cloud.
 - `set_max_steiner_points :: Bool = false`: If true the user will be asked to enter the maximum number
                                              of Steiner points added. If the user inputs 0 this is
                                              equivalent to `set_max_steiner_points = true`.
-- `set_area_max :: Bool = false`: If true the user will be asked for the maximum triangle area.
+- `max_area :: Number = 0.0`: maximum triangle area.
 - `set_angle_min :: Bool = false`: If true the user will be asked for a lower bound for minimum
                                 angles in the triangulation.
 - `add_switches :: String = ""`: The user can pass additional switches as described in triangle's
@@ -294,7 +284,7 @@ function create_mesh(point::Array{Float64,2};
                             prevent_steiner_points_boundary::Bool=false,
                             prevent_steiner_points::Bool=false,
                             set_max_steiner_points::Bool=false,
-                            set_area_max::Bool=false,
+                            max_area::Number=0.0,
                             set_angle_min::Bool=false,
                             add_switches::String="")
 
@@ -354,18 +344,8 @@ function create_mesh(point::Array{Float64,2};
     # -------
 
     # -------
-    if set_area_max
-        max_area_str = input("Maximum triangle area: ")
-        # Check if input makes sense
-        try
-            number = parse(Float64, max_area_str)
-            if number <= 0
-                Base.@error("Area must be positive.")
-            end
-        catch
-            Base.@error("Area must be a positive real number.")
-        end
-
+    if max_area
+        max_area_str = string(max_area)
         switches = switches * "a" * max_area_str
     end
     # -------
